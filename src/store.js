@@ -6,8 +6,6 @@ const reducers = combineReducers({
     posts : PostReducer
 })
 
-
-const middleware =  [thunk]
-const store = createStore(reducers, applyMiddleware(...middleware))
+const store = createStore(reducers, applyMiddleware(thunk))
 
 export default store

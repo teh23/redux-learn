@@ -1,29 +1,23 @@
-import React, {useEffect, useState} from "react";
-import axios from 'axios'
+
+import React from "react";
+import {addData} from "../reducers/PostReducer";
+import {useDispatch, useSelector} from "react-redux";
 export const PostForm = () =>{
-    const [state, setState] = React.useState({title: '', body: ''})
-    useEffect( () =>{
-        console.log(state)
-    })
+    const [form, setForm] = React.useState({title : '', body: '' })
+    const dispatch = useDispatch()
+   // const posts = useSelector(state => state.posts)
 
-    const onChange = (e) =>{
-        setState({...state ,[e.target.name] : e.target.value})
-    }
-
-    const onSubmit = (e) =>{
+    const onSubmit = async (e) =>{
         e.preventDefault()
 
-        const post ={
-            title: state.title,
-            body: state.body
-        }
-
-        axios
-            .post('https://jsonplaceholder.typicode.com/posts', post)
-            .then(res =>{
-                console.log(res)
-            })
+        dispatch(addData(form))
     }
+    const onChange = (e) =>{
+        e.preventDefault()
+        setForm({...form, [e.target.name] : e.target.value})
+
+    }
+
     return(
 
         <div>
@@ -31,11 +25,11 @@ export const PostForm = () =>{
             <form onSubmit={onSubmit}>
                 <div>
                     <label>Title:</label><br/>
-                    <input type="text" onChange={onChange} name="title" value={state.title}/>
+                    <input type="text" onChange={onChange} name="title" value={form.title}/>
                 </div>
                 <div>
                     <label>Body:</label><br/>
-                    <textarea type="text" name="body" value={state.body} onChange={onChange}/>
+                    <textarea type="text" name="body" value={form.body} onChange={onChange}/>
                 </div>
                 <br/>
                 <button type="submit" name="submit" >Add</button>
